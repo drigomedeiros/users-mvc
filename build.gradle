@@ -1,0 +1,87 @@
+plugins {
+    id 'application'
+    id 'jacoco'
+    id 'com.adarshr.test-logger' version '3.2.0'
+}
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+
+    // https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    // Use jersey-container-grizzly2-servlet for Grizzly HTTP container support.
+    // implementation 'org.glassfish.jersey.containers:jersey-container-grizzly2-servlet:3.1.3'
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-webapp
+    implementation 'org.eclipse.jetty:jetty-webapp:11.0.0'
+    // https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-jetty-servlet
+    implementation 'org.glassfish.jersey.containers:jersey-container-jetty-servlet:3.1.3'
+    // https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-jetty-http
+    implementation 'org.glassfish.jersey.containers:jersey-container-jetty-http:3.1.3'
+    // Use jersey-hk2 for HK2 dependency injection support.
+    implementation 'org.glassfish.jersey.inject:jersey-hk2:3.1.3'
+    // Use jersey mvc mustache
+    implementation 'org.glassfish.jersey.ext:jersey-mvc-mustache:3.1.3'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:31.0.1-jre'
+
+    // Use JUnit Jupiter for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    // Use AssertJ for test assertions.
+    testImplementation 'org.assertj:assertj-core:3.21.0'
+    // Use Mockito for mocks.
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    // Use mockito-junit-jupiter for integration between Mockito & JUnit Jupiter.
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
+    // Use mockito-inline for mocking final classes.
+    testImplementation 'org.mockito:mockito-inline:3.12.4'
+    // Use jersey-client for testing REST endpoints.
+    testImplementation 'org.glassfish.jersey.core:jersey-client:3.1.3'
+
+}
+
+def javaMainClass = 'com.fromscratch.users.UsersApp'
+
+run {
+    standardInput = System.in
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes(
+            "Main-Class": javaMainClass
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+application {
+    mainClass = javaMainClass
+}
+
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = "0.8.9"
+}
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
