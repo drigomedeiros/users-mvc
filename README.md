@@ -1,6 +1,6 @@
 # Welcome to Users MVC
 
-This repository contains the Users MVC application made on top of Users app domain module - [Jakarta Core Module](https://github.com/drigomedeiros/users-core). The intention is to use this repo to show how to build Jakarta EE MVC application in embedded servers, disposed to users as Single Page Application with minimal Javascript requirements.
+This repository contains the Users MVC application made on top of Users app domain module - [Users App Core Module](https://github.com/drigomedeiros/users-core). The intention is to use this repo to show how to build Jakarta EE MVC application in embedded servers, disposed to users as Single Page Application with minimal Javascript requirements.
 
 ## The Users App
 
@@ -23,7 +23,7 @@ The project, when concluded, will have:
 
 ## Related git repositories
 
-- [Jakarta Core Module](https://github.com/drigomedeiros/users-core)
+- [Users App Core Module](https://github.com/drigomedeiros/users-core)
 - [Jakarta EE Backend Project](#) - Future
 - [Jakarta MVC Project (Only Frontend)](#) - Future
 - [Springboot MVC Frontend Project](#) - Future
