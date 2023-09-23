@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.fromscratch.users.infrastructure.httpserver.HttpServerJUnitExtension;
-import com.fromscratch.users.infrastructure.jakartaee.JakartaMvcBoot;
 
 
 @DisplayName("Jakarta MVC Boot")

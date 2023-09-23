@@ -6,12 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-import com.fromscratch.users.domain.authorization.AuthorizationService;
 import com.fromscratch.users.domain.authorization.Resource;
 import com.fromscratch.users.domain.users.IUserRepository;
 import com.fromscratch.users.domain.users.User;
-import com.fromscratch.users.infrastructure.repositories.AuthorizationRepository;
-
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
