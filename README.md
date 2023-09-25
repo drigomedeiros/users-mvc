@@ -1,14 +1,14 @@
 # Welcome to Users MVC
 
-This repository contains the Users MVC application made on top of Users app domain module - [Users App Core Module](https://github.com/drigomedeiros/users-core). The intention is to use this repo to show how to build Jakarta EE MVC application in embedded servers, disposed to users as Single Page Application with minimal Javascript requirements.
+This repository contains the Users MVC application made on top of Users app domain module - [Users App Core Module](https://github.com/drigomedeiros/users-core). The intention is to use this repo to show how to build a Jakarta EE MVC application with embedded servers, disposed to users as Single Page Application with minimal Javascript requirements.
 
 ## The Users App
 
-This is a simple web application that does one only action: provide a list of registered users in a repository. For get this awesome functionality, the user must be authenticated and authorized to access the users list.
+provide a list of registered users in a repository in a web page. For get this awesome functionality, the user must be authenticated and authorized to access the users list.
 
 ## How to see it working
 
-As modern Java applications do nowadays, you can run the app with gradle by typing **./gradlew clean build** on the repository root. After that, access the application on browser: [Users MVC Application](http://localhost:8080/). By this moment, the super secure admin username and password are "1" and "1" respectively.
+As modern Java applications do nowadays, you can run the app with gradle by typing **./gradlew run** on the repository root. After that, access the application on browser: [Users MVC Application](http://localhost:8080/). Until this moment, the super secure admin username and password are "1" and "1" respectively.
 
 ## Infrastructure
 
