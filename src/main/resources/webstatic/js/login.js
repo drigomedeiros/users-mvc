@@ -1,7 +1,3 @@
-function initializeUserSession(data, xhr){
-    
-}
-
 function login(event) {
     event.preventDefault();
     jQuery.ajax({
@@ -38,4 +34,3 @@ function userAlreadyLoggedIn() {
         }
     });
 }
-
