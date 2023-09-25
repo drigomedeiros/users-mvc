@@ -94,5 +94,5 @@ run {
 }
 
 task installStaticDependencies(type: NpmTask){
-    args = ['install', '--prefix', './src/main/resources/webstatic']
+    args = ['install', '--prefix', './src/main/resources/webstatic', '--production']
 }
