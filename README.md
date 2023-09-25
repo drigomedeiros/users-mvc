@@ -8,7 +8,7 @@ This is a simple web application that does one only action: provide a list of re
 
 ## How to see it working
 
-As modern Java applications do nowadays, you can run the app with gradle by typing **./gradlew clean build** on the repository root. After, access the application on browser: [Users MVC Application](http://localhost:8080/app/). By this moment, the super secure admin username and password are "1" and "1" respectively.
+As modern Java applications do nowadays, you can run the app with gradle by typing **./gradlew clean build** on the repository root. After that, access the application on browser: [Users MVC Application](http://localhost:8080/). By this moment, the super secure admin username and password are "1" and "1" respectively.
 
 ## Infrastructure
 
