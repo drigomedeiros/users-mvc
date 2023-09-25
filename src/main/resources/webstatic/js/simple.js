@@ -1,10 +1,11 @@
 ((global, jQuery) => {
     class SimpleApp {
 
-        constructor(secured, applicationPath, loginPath) {
+        constructor(secured, applicationPath, loginPath, loading) {
             this._APPLICATION_PATH = applicationPath;
             this._AUTHORIZATION_PATH = loginPath;
             this._secured = secured;
+            this._LOADING = loading;
         }
     
         run() {
@@ -17,7 +18,7 @@
     
         getContent(url, targetElement, addLoading = true) {
             if(addLoading) {
-                $(targetElement).html('<div style="text-align: center; padding-top: 10px;"><div class="spinner-border text-secondary" style="text-align: center; vertical-align: middle;"></div></div>');
+                $(targetElement).html(this._LOADING);
             }
             let self = this;
             $.ajax({
@@ -51,6 +52,11 @@
     
     }
     
-    global.simpleApp = new SimpleApp(true, "/app/", "/app/login");
+    global.simpleApp = new SimpleApp(
+        true,
+        "/app/",
+        "/app/login",
+        '<div style="text-align: center; padding-top: 10px;"><div class="spinner-border text-secondary" style="text-align: center; vertical-align: middle;"></div></div>'
+    );
 
 })(window, jQuery);

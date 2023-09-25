@@ -1,21 +1,34 @@
 function login(event) {
     event.preventDefault();
+    
+    let login = $("#username").val();
+    let password = $("#password").val();
+    
+    if (login == "" || password == "") {
+        showErrorMessage("Provide username and password");
+        return;
+    }
+    
     jQuery.ajax({
         url: "/app/login",
         type: "POST",
         data: {
-            username: $("#username").val(),
-            password: $("#password").val()
+            username: login,
+            password: password
         },  
         success: function (data, message, xhr) {
             sessionStorage.setItem('Authorization', xhr.getResponseHeader('Authorization'));
             window.location.href = "/";
         },
         error: function (data) {
-            $("#loginErrorDiv").attr('style', 'display: block;');
-            $("#loginErrorMessage").html(data.responseText);
+            showErrorMessage(data.responseText);
         }
     });
+}
+
+function showErrorMessage(message){
+    $("#loginErrorDiv").attr('style', 'display: block;');
+    $("#loginErrorMessage").html(message);
 }
 
 function userAlreadyLoggedIn() {
