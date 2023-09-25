@@ -11,38 +11,28 @@ import com.fromscratch.users.infrastructure.httpserver.HttpServerJUnitExtension;
 import com.google.common.net.HttpHeaders;
 
 import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
 
 @DisplayName("Home Page")
 @ExtendWith(HttpServerJUnitExtension.class)
 class HomePageTest {
 
     @Test
-    @DisplayName("should redirect to login page when post directly")
-    void shouldReturnPageWhenUserIsAuthenticated() {
-        var webTarget = ClientBuilder.newClient().target(ApplicationTestUtils.BASE_URI + "home");
-        var response = webTarget.request().header(HttpHeaders.AUTHORIZATION, "Bearer dummyToken").post(Entity.text("")).readEntity(String.class);
-
-        assertThat(response).contains("You are not authorized to access this page");
-    }
-
-    @Test
     @DisplayName("should present the spa when user is authenticated")
     void shouldPresentSinglePageApplicationWhenUserIsAuthenticated() {
-        var webTarget = ClientBuilder.newClient().target(ApplicationTestUtils.BASE_URI + "home");
+        var webTarget = ClientBuilder.newClient().target(ApplicationTestUtils.BASE_URI);
         var response = webTarget.request().header(HttpHeaders.AUTHORIZATION, "Bearer dummyToken").get().readEntity(String.class);
 
         assertThat(response)
                     .contains("<h5>Welcome to Users MVC page.</h5>")
                     .contains("<a href=\"#\" class=\"d-block\" id=\"userName\">John</a>")
-                    .contains("<a href=\"/app/users\" class=\"nav-link spaNavigation\">")
-                    .contains("<a href=\"/app/home/initial\" class=\"nav-link active spaNavigation\">");
+                    .contains("<a href=\"#\" class=\"nav-link simpleNavigation\" simple-target=\"/app/users\">")
+                    .contains("<a href=\"#\" class=\"nav-link simpleNavigation\" simple-target=\"/app/initial\">");
     }
 
     @Test
     @DisplayName("should return initial content")
     void shouldReturnInitialContent() {
-        var webTarget = ClientBuilder.newClient().target(ApplicationTestUtils.BASE_URI + "home/initial");
+        var webTarget = ClientBuilder.newClient().target(ApplicationTestUtils.BASE_URI + "initial");
         var response = webTarget.request().header(HttpHeaders.AUTHORIZATION, "Bearer dummyToken").get().readEntity(String.class);
 
         assertThat(response)
@@ -54,10 +44,10 @@ class HomePageTest {
     @Test
     @DisplayName("should redirect to unauthorized page when user is not authorized")
     void shouldRedirectToUnauthorizedPageWhenUserIsNotAuthorized() {
-        var webTarget = ClientBuilder.newClient().target(ApplicationTestUtils.BASE_URI + "home/initial");
+        var webTarget = ClientBuilder.newClient().target(ApplicationTestUtils.BASE_URI + "initial");
         var response = webTarget.request().get().readEntity(String.class);
 
-        assertThat(response).contains("You are not authorized to access this page");
+        assertThat(response).contains("You're not authorized to access this content");
     }
     
 }

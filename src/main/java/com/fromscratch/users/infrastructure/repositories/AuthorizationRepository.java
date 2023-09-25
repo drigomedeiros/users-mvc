@@ -21,7 +21,7 @@ public class AuthorizationRepository implements IAuthorizationRepository {
         return new User("admin@fromscratch.com", 
                         "John", 
                         List.of(
-                            new Resource("home", "Home", "/app/home/initial", "GET"),
+                            new Resource("home", "Home", "/app/initial", "GET"),
                             new Resource("list-users", "Users", "/app/users", "GET")));
     }
 

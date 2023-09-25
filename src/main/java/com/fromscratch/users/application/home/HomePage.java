@@ -13,24 +13,20 @@ import com.fromscratch.users.infrastructure.repositories.AuthorizationRepository
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 
-@Path("/home")
+@Path("/")
 public class HomePage {
 
     private HttpServletRequest request;
-    private HttpServletResponse response;
     private AuthorizationService authorizationService;
     
     @Inject
-    public HomePage(HttpServletRequest request, HttpServletResponse response) {
+    public HomePage(HttpServletRequest request) {
         this.request = request;
-        this.response = response;
         var authorizationRepository = new AuthorizationRepository();
         this.authorizationService = new AuthorizationService(authorizationRepository);
     }
@@ -48,13 +44,6 @@ public class HomePage {
         return getRequestAuthorizationHeader()
                     .map(this::getHomePageSpaResponse)
                     .orElse(Response.status(Response.Status.UNAUTHORIZED).entity("You're not authorized to access this content").build());
-    }
-
-    @POST
-    public Response homeAfterLogin() {
-        return getResponseAuthorizationHeader()
-                    .map(this::getHomePageSpaResponse)
-                    .orElse(Response.seeOther(URI.create("/app/?unauthorized=true")).build());
     }
 
     private Response getHomeInitialContent(String token) {
@@ -81,12 +70,6 @@ public class HomePage {
         return request.getHeader(HttpHeaders.AUTHORIZATION) == null ? 
                 Optional.empty() : 
                 Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer ", ""));
-    }
-
-    private Optional<String> getResponseAuthorizationHeader() {
-        return response.getHeader(HttpHeaders.AUTHORIZATION) == null ? 
-                Optional.empty() : 
-                Optional.of(response.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer ", ""));
     }
 
 }

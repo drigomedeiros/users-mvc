@@ -46,7 +46,7 @@ public class JettyHttpServer implements IHttpServer{
             staticContentHolder.setInitParameter("resourceBase", staticContent);
             staticContentHolder.setInitParameter("dirAllowed", "false");
             staticContentHolder.setInitParameter("pathInfoOnly", "true");
-            mainContext.addServlet(staticContentHolder, "/static/*");
+            mainContext.addServlet(staticContentHolder, "/*");
  
             server.start();
             
