@@ -86,13 +86,21 @@ jacocoTestReport {
 }
 
 build {
-    dependsOn 'installStaticDependencies'
+    dependsOn 'nodeModulesInstall'
 }
 
 run {
-    dependsOn 'installStaticDependencies'
+    dependsOn 'nodeModulesInstall'
 }
 
-task installStaticDependencies(type: NpmTask){
-    args = ['install', '--prefix', './src/main/resources/webstatic', '--production']
+task nodeModulesInstall(type: NpmTask){
+    args = ['install', '--prefix', './src/main/resources/webstatic']
+    finalizedBy 'simpleModulesInstall'
 }
+
+task simpleModulesInstall(type: NpmTask){
+    args = ['run', '--prefix', './src/main/resources/webstatic', 'gulp']
+}
+
+nodeModulesInstall.onlyIf { !file('./src/main/resources/webstatic/simple_modules').exists() }
+simpleModulesInstall.onlyIf { !file('./src/main/resources/webstatic/simple_modules').exists() }

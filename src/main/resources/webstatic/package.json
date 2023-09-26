@@ -6,7 +6,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "gulp": "gulp"
+  },
   "dependencies": {
     "admin-lte": "^3.2.0"
+  },
+  "devDependencies": {
+    "del": "^7.1.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0"
   }
 }

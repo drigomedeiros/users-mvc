@@ -183,3 +183,4 @@ gradle-app.setting
 
 ### NPM ###
 **/node_modules/
+**/simple_modules/
