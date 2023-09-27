@@ -10,11 +10,13 @@
     "gulp": "gulp"
   },
   "dependencies": {
-    "admin-lte": "^3.2.0"
+    "admin-lte": "^3.2.0",
+    "axios": "^1.5.1",
+    "mustache": "^4.2.0"
   },
   "devDependencies": {
-    "del": "^7.1.0",
     "gulp": "^4.0.2",
-    "gulp-cli": "^2.3.0"
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }

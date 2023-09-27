@@ -35,7 +35,7 @@ public class ListUsersPage {
     public Response users() {
         return getRequestAuthorizationHeader()
                     .map(this::getUsersPageContent)
-                    .orElse(Response.seeOther(URI.create("/app/unauthorized")).build());
+                    .orElse(Response.seeOther(URI.create("/app/error?code=401")).build());
     }
 
     private Response getUsersPageContent(String token) {

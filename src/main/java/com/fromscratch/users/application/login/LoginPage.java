@@ -36,13 +36,13 @@ public class LoginPage {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response processAuthentication(@FormParam("username") String username, @FormParam("password") String password) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response processAuthentication(AuthenticationRequest authenticationRequest) {
         try {
-            String token = authenticationService.authenticate(new AuthenticationRequest(username, password));
+            String token = authenticationService.authenticate(authenticationRequest);
             return Response.ok().header(HttpHeaders.AUTHORIZATION, token).build();
         } catch (AuthenticationException e) {
-            logger.warning(e.getMessage() + " - " + username);
+            logger.warning(e.getMessage() + " - " + authenticationRequest.userLogin());
             return Response.status(Response.Status.UNAUTHORIZED).entity(ERROR_MESSAGE).build();
         }
     }

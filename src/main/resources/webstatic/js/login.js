@@ -1,49 +1,37 @@
 function login(event) {
     event.preventDefault();
     
-    let login = $("#username").val();
-    let password = $("#password").val();
-    
+    let login = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
     if (login == "" || password == "") {
         showErrorMessage("Provide username and password");
         return;
     }
     
-    jQuery.ajax({
-        url: "/app/login",
-        type: "POST",
-        data: {
-            username: login,
-            password: password
-        },  
-        success: function (data, message, xhr) {
-            sessionStorage.setItem('Authorization', xhr.getResponseHeader('Authorization'));
+    fetch("/app/login", {
+        method: "POST",
+        body: JSON.stringify({
+            userLogin: login,
+            userPassword: password
+        }),
+        headers: {"Content-type": "application/json"}
+    })
+    .then((response) => {  
+        if (response.status == 200) {
+            sessionStorage.setItem('Authorization', response.headers.get('Authorization'));
             window.location.href = "/";
-        },
-        error: function (data) {
-            showErrorMessage(data.responseText);
+        } else {
+            response.text().then((text) => {
+                showErrorMessage(new Error(text));
+            });
         }
+    }).catch((error) => {
+        showErrorMessage(error.message);
     });
 }
 
 function showErrorMessage(message){
-    $("#loginErrorDiv").attr('style', 'display: block;');
-    $("#loginErrorMessage").html(message);
-}
-
-function userAlreadyLoggedIn() {
-    jQuery.ajax({
-        url: "/app/home",
-        type: "GET",
-        headers: {
-            'Authorization': sessionStorage.getItem('Authorization')
-        },  
-        success: function (data, message, xhr) {
-            initializeUserSession(data, xhr);
-        },
-        error: function (data) {
-            $("#loginErrorDiv").attr('style', 'display: block;');
-            $("#loginErrorMessage").html(data.responseText);
-        }
-    });
+    document.getElementById("loginErrorDiv").style = 'display: block;';
+    document.getElementById("loginErrorMessage").innerHTML = message;
 }

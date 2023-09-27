@@ -18,13 +18,26 @@
   <link rel="stylesheet" href="/simple_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/simple_modules/admin-lte/dist/css/adminlte.min.css">
+  
+  <script id="error.mustache" type="x-tmpl-mustache">
+    <div style="text-align: center; padding-top: 10px;">
+        <h2 class="headline text-danger">{{errorCode}}</h2>
+        <div class="error-content">
+            <h3><i class="fas fa-exclamation-triangle text-danger"></i>{{errorMessage}}</h3>
+        </div>
+    </div>
+  </script>
+  <script id="loading.mustache" type="x-tmpl-mustache">
+    <div style="text-align: center; padding-top: 10px;">
+        <div class="spinner-border text-secondary" style="text-align: center; vertical-align: middle;"></div>
+    </div>
+  </script>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body id="simpleRoot" class="hold-transition sidebar-mini layout-fixed">
     <!-- Preloader -->
     <div id="loading" class="preloader flex-column justify-content-center align-items-center">
       <img class="animation__shake" src="/simple_modules/admin-lte/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
     </div>
-    <div id="simpleApp" class="wrapper"></div>
 </body>
 <!-- jQuery -->
 <script src="/simple_modules/jquery/dist/jquery.min.js"></script>
@@ -45,9 +58,13 @@
 <script src="/simple_modules/datatables.net-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/simple_modules/admin-lte/dist/js/adminlte.min.js"></script>
+<!-- Mustache -->
+<script src="/simple_modules/mustache/mustache.min.js"></script>
 <!-- Single App Partial Loading -->
 <script src="/js/simple.js"></script>
 <script language="javascript">
-  simpleApp.run();
+  new SimpleApp(
+      Mustache
+  ).run(true, "/app/", "/app/login");
 </script>
 </html>
