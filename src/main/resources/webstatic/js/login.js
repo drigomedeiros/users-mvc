@@ -9,7 +9,7 @@ function login(event) {
         return;
     }
     
-    fetch("/app/login", {
+    fetch(document.getElementById("formLogin").action, {
         method: "POST",
         body: JSON.stringify({
             userLogin: login,
