@@ -1,13 +1,13 @@
 class SimpleApp {
 
     constructor(mustache) {
-        this._APPLICATION_PATH = "";
-        this._AUTHORIZATION_PATH = "";
+        this._APPLICATION_PATH = "/";
+        this._AUTHORIZATION_PATH = "/login.html";
         this._secured = false;
         this._mustache = mustache;
     }
 
-    run(secured, applicationPath, loginPath) {
+    async run(secured, applicationPath, loginPath = "/login.html") {
         
         this._APPLICATION_PATH = applicationPath;
         this._AUTHORIZATION_PATH = loginPath;
@@ -15,31 +15,75 @@ class SimpleApp {
 
         if((this._secured && this.isUserAlreadyLoggedIn()) || !this._secured){
             this.getContent(this._APPLICATION_PATH, document.body, false);
+            return "Simple App is started";
         } else {
             window.location.href = "login.html";
+            return "Simple App is secured and needs authentication";
         }
 
+        
     }
 
     getContent(url, htmlElement, addLoading = true) {
-        if(addLoading) {
-            htmlElement.innerHTML = this.getTemplateContent("loading.mustache", {});
-        }
-        let self = this;
-        fetch(url, {
-            headers: {"Authorization": sessionStorage.getItem("Authorization")},
-            type: "GET"
-        })
-        .then((response) => response.text())
-        .then((data) => {
-            htmlElement.innerHTML = "";
-            let parsedElement = new DOMParser().parseFromString(data, "text/html");
-            self.appendChildren(parsedElement, htmlElement);
-            self.executeScripts(htmlElement);
-            self.addNavigationHooks(htmlElement);
-        }).catch(() => {
-            htmlElement.innerHTML = self.getTemplateContent("error.mustache", {errorCode: "500", errorMessage: "Ooops! Service might be unavailable. Trying to fix it"});
+        return new Promise((resolve, reject) => {
+            if(document.getElementById("error.mustache") == undefined || document.getElementById("loading.mustache") == undefined){
+                alert("the initial static html must have template scripts in head. Refer to documentation to get this done or use the default index.html file");
+                reject("");
+                return;
+            }
+            if(addLoading) {
+                htmlElement.innerHTML = this.getTemplateContent("loading.mustache", {});
+            }
+            let self = this;
+            fetch(url, {
+                headers: {"Authorization": sessionStorage.getItem("Authorization")},
+                type: "GET"
+            })
+            .then((response) => response.text())
+            .then((data) => {
+                htmlElement.innerHTML = "";
+                let serverContent = new DOMParser().parseFromString(data, "text/html");
+                
+                self.isServerContentValid(htmlElement, serverContent);
+                 
+                self.appendChildren(serverContent, htmlElement);
+                self.executeScripts(htmlElement);
+                self.addNavigationHooks(htmlElement);
+                
+                resolve(htmlElement.innerHTML);
+                
+            }).catch((error) => {
+                if(error.code == 400){
+                    alert(error.message);
+                    htmlElement.innerHTML = "";
+                } else {
+                    htmlElement.innerHTML = self.getTemplateContent("error.mustache", {errorCode: "500", errorMessage: "Ooops! Service might be unavailable. Trying to fix it"});
+                }
+                
+                reject(htmlElement.innerHTML);
+            });
         });
+    }
+
+    isServerContentValid(htmlElement, serverContent){
+        if(htmlElement instanceof HTMLBodyElement && serverContent.getElementById("contentRoot") == undefined) {
+            throw {code: 400, message: "the initial content retrieved from server must have a html component with id contentRoot"};
+        } else if(htmlElement instanceof HTMLBodyElement && serverContent.getElementsByClassName("simpleNavigation").length == 0) {
+            throw {code: 400, message: "the initial content retrieved from server must have the application links defined with class simpleNavigation and simple-target attribute pointing to a server route"};
+        } else if(htmlElement instanceof HTMLBodyElement && !this.allSimpleNavigationHaveSimpleTargetAttribute(serverContent.getElementsByClassName("simpleNavigation"))) {
+            throw {code: 400, message: "the simpleNavigation links must have simple-target attribute pointing to a server route"};
+        }
+    }
+
+    allSimpleNavigationHaveSimpleTargetAttribute(htmlElements) {
+        let allHave = true;
+        Array.from(htmlElements).forEach(element => {
+            if(element.getAttribute("simple-target") == undefined){
+                allHave = false;
+                return;
+            }
+        });
+        return allHave;
     }
 
     appendChildren(parsedElement, htmlElement) {

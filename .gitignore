@@ -184,3 +184,6 @@ gradle-app.setting
 ### NPM ###
 **/node_modules/
 **/simple_modules/
+
+### Jest ###
+src/main/resources/webstatic/test_coverage
